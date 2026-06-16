@@ -241,9 +241,12 @@ img{max-width:100%;display:block}
           <span class="cg-sub">Built to live in</span>
           <div class="tags">
             <span>Men's wear</span>
-            <span>Activewear</span>
-            <span>Underwear (M/W)</span>
-            <span>Pajamas (M/W)</span>
+            <span>Activewear Men's</span>
+            <span>Activewear Women's</span>
+            <span>Men's Underwear</span>
+            <span>Women's Underwear</span>
+            <span>Men's Pajama's</span>
+            <span>Women's Pajama's</span>
             <span>Swimwear</span>
             <span>Shoes</span>
           </div>
@@ -547,8 +550,8 @@ grid.addEventListener('click',function(e){
 // chip "Men's wear" maps to a collection titled "Mens Wear". If a chip's collection is named
 // very differently, pin it here as  "Chip label":"collection-handle".
 var HANDLE_OVERRIDES={
- // "Underwear (M/W)":"underwear",
- // "Pajamas (M/W)":"pajamas"
+ // "Men's Pajama's":"mens-pajamas",
+ // "Activewear Men's":"activewear-mens"
 };
 function slugify(s){return String(s).toLowerCase().replace(/[\u2019']/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
 function handleFor(label){return HANDLE_OVERRIDES[label]||COL_MAP[normKey(label)]||slugify(label)}
