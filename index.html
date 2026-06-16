@@ -104,6 +104,8 @@ img{max-width:100%;display:block}
 .tags{display:flex;flex-wrap:wrap;gap:10px}
 .tags span{font-size:13.5px;color:var(--white);border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.025);transition:border-color .2s,transform .2s,background .2s}
 .tags span:hover{border-color:color-mix(in srgb,var(--c) 60%,transparent);background:color-mix(in srgb,var(--c) 10%,transparent);transform:translateY(-2px)}
+.tags span{cursor:pointer}
+.tags span.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--white);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 50%,transparent)}
 @media(max-width:760px){.collection{grid-template-columns:1fr}}
 
 /* how it works steps */
@@ -135,6 +137,10 @@ img{max-width:100%;display:block}
 .card:hover::before{opacity:1}
 .thumb{aspect-ratio:4/5;display:grid;place-items:center;padding:26px;position:relative;background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--c) 18%,transparent),transparent 60%)}
 .thumb svg{width:62%;height:auto;transition:filter .3s,transform .3s}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.thumb.has-img{padding:0}
+.card:hover .thumb img{transform:scale(1.03)}
+.ld{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist);text-align:center;padding:30px 0}
 .card:hover .thumb svg{filter:drop-shadow(0 0 18px var(--c));transform:scale(1.03)}
 .tag{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#07080c;background:var(--c);padding:5px 10px;border-radius:999px;font-weight:600}
 .meta{padding:18px 18px 20px;border-top:1px solid var(--line)}
@@ -414,20 +420,147 @@ document.querySelectorAll('.cause').forEach(function(el){
   var c=getComputedStyle(el).getPropertyValue('--c').trim();
   el.querySelector('.icon').innerHTML=ribbon(c);
 });
-// tee products, cause-tagged
+// ---- Shopify Storefront API: live "Full Collection" ----
+// Fill these three in. Token is the PUBLIC Storefront access token (safe in client code).
+var SHOP={
+  domain:'b-squared-apparel-2.myshopify.com', // client's .myshopify.com domain
+  token:'YOUR_STOREFRONT_ACCESS_TOKEN',  // public Storefront API access token
+  collection:'full-collection',          // collection handle (Shopify lowercases + hyphenates the title)
+  apiVersion:'2026-04'
+};
+
+// cause color + funds, detected from each product's Shopify tags (tag a product "als", "mind"/"mental", or "cancer")
 var C={als:'#36d6ff',mind:'#8a63ef',cancer:'#e45fd0'};
-var products=[
- {n:'ALS — "Still Standing" Tee',p:'$32',f:'$10 funds ALS research',cause:'als',label:'ALS'},
- {n:'Mind — "It\u2019s OK" Tee',p:'$32',f:'$10 funds mental health',cause:'mind',label:'Mental Health'},
- {n:'Cancer — "Fight On" Tee',p:'$32',f:'$10 funds cancer research',cause:'cancer',label:'Cancer'},
- {n:'B² — "Squared" Logo Tee',p:'$34',f:'Split across all three',cause:'mind',label:'All causes'},
+var CAUSE=[
+ {match:['als'],                 color:C.als,    label:'ALS',           funds:'$10 funds ALS research'},
+ {match:['mind','mental'],       color:C.mind,   label:'Mental Health', funds:'$10 funds mental health'},
+ {match:['cancer'],              color:C.cancer, label:'Cancer',        funds:'$10 funds cancer research'},
+ {match:['all','squared','logo'],color:C.mind,   label:'All causes',    funds:'Split across all three'}
 ];
-document.getElementById('grid').innerHTML=products.map(function(x){
- var c=C[x.cause];
- return '<a class="card" href="#shop" style="--c:'+c+'"><div class="thumb"><span class="tag">'+x.label+'</span>'+tee(c)+'</div>'+
-   '<div class="meta"><div class="name">'+x.n+'</div>'+
-   '<div class="row"><span class="price">'+x.p+'</span><span class="funds">'+x.f+'</span></div></div></a>';
-}).join('');
+function causeFor(tags){
+ var t=(tags||[]).map(function(s){return String(s).toLowerCase()});
+ for(var i=0;i<CAUSE.length;i++){for(var j=0;j<CAUSE[i].match.length;j++){if(t.indexOf(CAUSE[i].match[j])>-1)return CAUSE[i]}}
+ return {color:'#36d6ff',label:'B\u00b2 tee',funds:'Funds the cause'};
+}
+function money(a,cur){var n=parseFloat(a);try{return new Intl.NumberFormat('en-US',{style:'currency',currency:cur||'USD',minimumFractionDigits:(n%1?2:0)}).format(n)}catch(e){return '$'+n}}
+function esc(s){return String(s||'').replace(/"/g,'&quot;')}
+
+var grid=document.getElementById('grid');
+function gql(query,variables){
+ return fetch('https://'+SHOP.domain+'/api/'+SHOP.apiVersion+'/graphql.json',{
+  method:'POST',
+  headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOP.token},
+  body:JSON.stringify({query:query,variables:variables||{}})
+ }).then(function(r){return r.json()});
+}
+
+// shared product fields
+var PF='id title handle tags featuredImage{url altText} '+
+ 'priceRange{minVariantPrice{amount currencyCode}} '+
+ 'variants(first:1){edges{node{id availableForSale}}}';
+var ALL_Q='query All($count:Int!){products(first:$count){edges{node{'+PF+'}}}}';
+var COL_Q='query Col($handle:String!,$count:Int!){collection(handle:$handle){title products(first:$count){edges{node{'+PF+'}}}}}';
+var COLS_Q='{collections(first:100){edges{node{title handle}}}}';
+
+function renderProducts(nodes,emptyMsg){
+ if(!nodes.length){grid.innerHTML='<p class="ld" style="grid-column:1/-1">'+(emptyMsg||'Nothing here yet.')+'</p>';return}
+ grid.innerHTML=nodes.map(function(n){
+  var ca=causeFor(n.tags);
+  var v=((n.variants.edges[0]||{}).node)||{};
+  var price=money(n.priceRange.minVariantPrice.amount,n.priceRange.minVariantPrice.currencyCode);
+  var img=n.featuredImage;
+  var thumb=img
+   ? '<div class="thumb has-img" style="--c:'+ca.color+'"><span class="tag">'+ca.label+'</span><img src="'+esc(img.url)+'" alt="'+esc(img.altText||n.title)+'" loading="lazy"></div>'
+   : '<div class="thumb" style="--c:'+ca.color+'"><span class="tag">'+ca.label+'</span>'+tee(ca.color)+'</div>';
+  return '<a class="card" href="#shop" data-variant="'+esc(v.id)+'" style="--c:'+ca.color+'">'+thumb+
+   '<div class="meta"><div class="name">'+n.title+'</div>'+
+   '<div class="row"><span class="price">'+price+'</span><span class="funds">'+ca.funds+'</span></div></div></a>';
+ }).join('');
+}
+
+// build a name->handle map of the store's collections so chips match by name
+var COL_MAP={};
+function normKey(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'')}
+function fetchCollections(){
+ return gql(COLS_Q,{}).then(function(res){
+  ((res.data&&res.data.collections&&res.data.collections.edges)||[]).forEach(function(e){
+   COL_MAP[normKey(e.node.title)]=e.node.handle;
+  });
+ }).catch(function(){});
+}
+function tokenMissing(){
+ if(SHOP.token.indexOf('YOUR_STOREFRONT')>-1){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Add your Storefront access token in the SHOP config.</p>';return true}
+ return false;
+}
+
+// full catalog (default load + "View all")
+function loadAll(){
+ if(tokenMissing())return;
+ grid.innerHTML='<p class="ld" style="grid-column:1/-1">Loading\u2026</p>';
+ gql(ALL_Q,{count:50}).then(function(res){
+  if(res.errors){throw new Error((res.errors[0]&&res.errors[0].message)||'Storefront API error')}
+  var nodes=((res.data&&res.data.products&&res.data.products.edges)||[]).map(function(e){return e.node});
+  renderProducts(nodes,'No products published yet.');
+ }).catch(function(err){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Couldn\u2019t load products: '+err.message+'</p>'});
+}
+
+// one collection's products
+function loadCollection(handle,label){
+ if(tokenMissing())return;
+ grid.innerHTML='<p class="ld" style="grid-column:1/-1">Loading\u2026</p>';
+ gql(COL_Q,{handle:handle,count:50}).then(function(res){
+  if(res.errors){throw new Error((res.errors[0]&&res.errors[0].message)||'Storefront API error')}
+  var col=res.data&&res.data.collection;
+  if(!col){grid.innerHTML='<p class="ld" style="grid-column:1/-1">No \u201c'+(label||handle)+'\u201d collection yet \u2014 create it in Shopify and add products.</p>';return}
+  renderProducts(col.products.edges.map(function(e){return e.node}),'No products in \u201c'+(label||col.title)+'\u201d yet.');
+ }).catch(function(err){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Couldn\u2019t load products: '+err.message+'</p>'});
+}
+
+// click a card -> create a cart with its variant -> redirect to Shopify-hosted checkout
+var CART_Q='mutation Cart($id:ID!){cartCreate(input:{lines:[{quantity:1,merchandiseId:$id}]}){cart{checkoutUrl} userErrors{message}}}';
+grid.addEventListener('click',function(e){
+ var card=e.target.closest('.card');if(!card)return;
+ var id=card.getAttribute('data-variant');if(!id)return;
+ e.preventDefault();
+ card.style.opacity=.6;
+ gql(CART_Q,{id:id}).then(function(res){
+  var c=res.data&&res.data.cartCreate&&res.data.cartCreate.cart;
+  if(c&&c.checkoutUrl){window.location.href=c.checkoutUrl}else{card.style.opacity=1;alert('Could not start checkout. Please try again.')}
+ }).catch(function(){card.style.opacity=1;alert('Could not start checkout. Please try again.')});
+});
+
+// ---- category chips -> open the matching Shopify collection ----
+// Each chip matches a collection by NAME, ignoring case, spaces, and punctuation, so the
+// chip "Men's wear" maps to a collection titled "Mens Wear". If a chip's collection is named
+// very differently, pin it here as  "Chip label":"collection-handle".
+var HANDLE_OVERRIDES={
+ // "Underwear (M/W)":"underwear",
+ // "Pajamas (M/W)":"pajamas"
+};
+function slugify(s){return String(s).toLowerCase().replace(/[\u2019']/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function handleFor(label){return HANDLE_OVERRIDES[label]||COL_MAP[normKey(label)]||slugify(label)}
+
+var chips=document.querySelectorAll('.tags span');
+chips.forEach(function(el){
+ el.setAttribute('role','button');
+ el.setAttribute('tabindex','0');
+ function go(){
+  var label=el.textContent.trim();
+  chips.forEach(function(s){s.classList.remove('active')});
+  el.classList.add('active');
+  loadCollection(handleFor(label),label);
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+ }
+ el.addEventListener('click',go);
+ el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+});
+
+// "View all" resets to the full catalog
+var viewAll=document.querySelector('#shop .btn-ghost');
+if(viewAll){viewAll.addEventListener('click',function(e){e.preventDefault();chips.forEach(function(s){s.classList.remove('active')});loadAll();document.getElementById('shop').scrollIntoView({behavior:'smooth'})})}
+
+// on load: learn the store's collection names (for matching), then show the full catalog
+fetchCollections().then(loadAll);
 
 var mb=document.getElementById('menuBtn'),nav=document.getElementById('nav');
 mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
