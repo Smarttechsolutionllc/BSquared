@@ -204,7 +204,7 @@ img{max-width:100%;display:block}
     </a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a href="#causes">Causes</a>
-      <a href="#shop">Shop tees</a>
+      <a href="#shop">Shop</a>
       <a href="#collection">Collection</a>
       <a href="#impact">Impact</a>
       <a href="#story">Story</a>
@@ -366,7 +366,7 @@ img{max-width:100%;display:block}
 
   <section class="section" id="shop">
     <div class="wrap">
-      <div class="sec-head"><div><span class="eyebrow">The collection</span><h2>Shop the tees</h2></div><a class="btn btn-ghost" href="#shop">View all</a></div>
+      <div class="sec-head"><div><span class="eyebrow" id="shopEyebrow">The collection</span><h2 id="shopTitle">Shop everything</h2></div><a class="btn btn-ghost" id="viewAll" href="#shop" style="display:none">&larr; All products</a></div>
       <div class="grid" id="grid"></div>
     </div>
   </section>
@@ -446,6 +446,15 @@ function money(a,cur){var n=parseFloat(a);try{return new Intl.NumberFormat('en-U
 function esc(s){return String(s||'').replace(/"/g,'&quot;')}
 
 var grid=document.getElementById('grid');
+var shopTitle=document.getElementById('shopTitle');
+var shopEyebrow=document.getElementById('shopEyebrow');
+var viewAll=document.getElementById('viewAll');
+// keep the shop heading in sync with what's in the grid
+function setHead(title,label,count,filtered){
+ if(shopTitle)shopTitle.textContent=title;
+ if(shopEyebrow)shopEyebrow.textContent=label+(count!=null?(' \u00b7 '+count+' item'+(count===1?'':'s')):'');
+ if(viewAll){viewAll.style.display=filtered?'':'none'}
+}
 function gql(query,variables){
  return fetch('https://'+SHOP.domain+'/api/'+SHOP.apiVersion+'/graphql.json',{
   method:'POST',
@@ -500,6 +509,7 @@ function loadAll(){
  gql(ALL_Q,{count:50}).then(function(res){
   if(res.errors){throw new Error((res.errors[0]&&res.errors[0].message)||'Storefront API error')}
   var nodes=((res.data&&res.data.products&&res.data.products.edges)||[]).map(function(e){return e.node});
+  setHead('Shop everything','The collection',nodes.length,false);
   renderProducts(nodes,'No products published yet.');
  }).catch(function(err){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Couldn\u2019t load products: '+err.message+'</p>'});
 }
@@ -511,8 +521,10 @@ function loadCollection(handle,label){
  gql(COL_Q,{handle:handle,count:50}).then(function(res){
   if(res.errors){throw new Error((res.errors[0]&&res.errors[0].message)||'Storefront API error')}
   var col=res.data&&res.data.collection;
-  if(!col){grid.innerHTML='<p class="ld" style="grid-column:1/-1">No \u201c'+(label||handle)+'\u201d collection yet \u2014 create it in Shopify and add products.</p>';return}
-  renderProducts(col.products.edges.map(function(e){return e.node}),'No products in \u201c'+(label||col.title)+'\u201d yet.');
+  if(!col){setHead(label||handle,'Category',0,true);grid.innerHTML='<p class="ld" style="grid-column:1/-1">No \u201c'+(label||handle)+'\u201d collection yet \u2014 create it in Shopify and add products.</p>';return}
+  var prods=col.products.edges.map(function(e){return e.node});
+  setHead(label||col.title,'Category',prods.length,true);
+  renderProducts(prods,'No products in \u201c'+(label||col.title)+'\u201d yet.');
  }).catch(function(err){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Couldn\u2019t load products: '+err.message+'</p>'});
 }
 
@@ -555,8 +567,7 @@ chips.forEach(function(el){
  el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
 });
 
-// "View all" resets to the full catalog
-var viewAll=document.querySelector('#shop .btn-ghost');
+// "View all" / "All products" resets to the full catalog
 if(viewAll){viewAll.addEventListener('click',function(e){e.preventDefault();chips.forEach(function(s){s.classList.remove('active')});loadAll();document.getElementById('shop').scrollIntoView({behavior:'smooth'})})}
 
 // on load: learn the store's collection names (for matching), then show the full catalog
