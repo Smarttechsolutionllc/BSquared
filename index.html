@@ -165,6 +165,45 @@ img{max-width:100%;display:block}
 .form input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(54,214,255,.18)}
 .msg{margin-top:18px;font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--cyan);min-height:18px}
 
+/* reviews */
+.reviews-wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:22px;align-items:start}
+.review-panel,.review-form{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,var(--panel2),rgba(14,17,25,.6));padding:clamp(26px,4vw,42px);position:relative;overflow:hidden}
+.review-panel::after,.review-form::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--neon)}
+.review-score{display:flex;align-items:flex-end;gap:18px;margin:20px 0 18px;flex-wrap:wrap}
+.review-score .big-score{font-family:var(--display);font-size:clamp(46px,7vw,76px);line-height:.9;background:var(--neon);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stars{display:inline-flex;gap:5px;color:var(--cyan);text-shadow:0 0 14px rgba(54,214,255,.45);letter-spacing:.03em}
+.review-score .stars{font-size:24px;margin-bottom:6px}
+.review-panel p,.review-form p{color:var(--mist);margin:0}
+.review-list{display:grid;gap:14px;margin-top:26px}
+.review-card{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025);padding:18px}
+.review-card .review-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:10px}
+.review-card strong{font-size:15px}
+.review-card .stars{font-size:15px;white-space:nowrap}
+.review-card .vbadge{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--cyan);border-radius:999px;padding:1px 7px;margin-left:8px}
+.review-card p{font-size:14.5px;color:var(--mist);margin:0}
+.review-photos{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.review-photos img,.photo-preview img{width:74px;height:74px;border-radius:14px;object-fit:cover;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.review-form h3{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(24px,4vw,36px);line-height:1;margin:0 0 12px}
+.review-fields{display:grid;gap:14px;margin-top:22px}
+.review-fields input,.review-fields textarea,.review-fields select{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--white);border-radius:16px;padding:13px 16px;font-size:15px;font-family:var(--body)}
+.review-fields textarea{min-height:112px;resize:vertical}
+.review-fields input::placeholder,.review-fields textarea::placeholder{color:#6c7488}
+.review-fields input:focus,.review-fields textarea:focus,.review-fields select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(54,214,255,.18)}
+.rating-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.star-menu{display:inline-flex;gap:7px;direction:rtl}
+.star-menu input{position:absolute;opacity:0;pointer-events:none}
+.star-menu label{font-size:34px;line-height:1;color:#3a4050;cursor:pointer;transition:transform .15s,color .15s,text-shadow .15s}
+.star-menu label:hover,.star-menu label:hover ~ label,.star-menu input:checked ~ label{color:var(--cyan);text-shadow:0 0 18px rgba(54,214,255,.55);transform:translateY(-1px)}
+.rating-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mist)}
+.file-drop{border:1px dashed rgba(255,255,255,.22);border-radius:18px;background:rgba(255,255,255,.025);padding:18px;text-align:center;color:var(--mist);cursor:pointer;transition:border-color .2s,background .2s}
+.file-drop:hover{border-color:var(--cyan);background:rgba(54,214,255,.06)}
+.file-drop input{display:none}
+.file-drop strong{display:block;color:var(--white);margin-bottom:3px}
+.photo-preview{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.review-note{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-top:12px!important}
+@media(max-width:900px){.reviews-wrap{grid-template-columns:1fr}}
+@media(max-width:560px){.review-card .review-top{display:block}.review-card .stars{margin-top:6px}.star-menu label{font-size:30px}}
+
 .foot{border-top:1px solid var(--line);margin-top:40px;padding:60px 0 40px}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
 .foot .brand img{height:34px}
@@ -208,6 +247,7 @@ img{max-width:100%;display:block}
       <a href="#collection">Collection</a>
       <a href="#impact">Impact</a>
       <a href="#story">Story</a>
+      <a href="#reviews">Reviews</a>
     </nav>
     <div class="hdr-cta">
       <a class="bag" href="#" aria-label="Bag, 0 items">BAG&nbsp;(0)</a>
@@ -396,6 +436,52 @@ img{max-width:100%;display:block}
       </div>
     </div>
   </section>
+
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Customer love</span><h2>Customer reviews</h2></div></div>
+      <p class="lead-sub">Rate your order and leave a short review. Submissions are checked before they appear here.</p>
+      <div class="reviews-wrap">
+        <div class="review-panel">
+          <span class="eyebrow">Community rating</span>
+          <div class="review-score">
+            <div class="big-score" id="avgScore">&mdash;</div>
+            <div>
+              <div class="stars" id="avgStars" aria-label="No ratings yet">☆☆☆☆☆</div>
+              <p id="reviewCount">No reviews yet</p>
+            </div>
+          </div>
+          <div class="review-list" id="reviewList">
+            <p class="ld" style="padding:8px 0">Loading reviews&hellip;</p>
+          </div>
+        </div>
+
+        <form class="review-form" id="reviewForm">
+          <h3>Leave a review</h3>
+          <p>Rate your order and write a short review. Reviews are checked before they go live.</p>
+          <div class="review-fields">
+            <input id="reviewName" type="text" placeholder="Your name" aria-label="Your name" required>
+            <input id="reviewEmail" type="email" placeholder="Your email (kept private)" aria-label="Your email" required>
+            <input id="reviewProduct" type="text" placeholder="Product name (optional)" aria-label="Product name">
+            <div class="rating-picker" aria-label="Choose a star rating">
+              <span class="rating-label" id="ratingText">Choose rating</span>
+              <div class="star-menu">
+                <input type="radio" name="rating" id="star5" value="5" required><label for="star5" title="5 stars">★</label>
+                <input type="radio" name="rating" id="star4" value="4"><label for="star4" title="4 stars">★</label>
+                <input type="radio" name="rating" id="star3" value="3"><label for="star3" title="3 stars">★</label>
+                <input type="radio" name="rating" id="star2" value="2"><label for="star2" title="2 stars">★</label>
+                <input type="radio" name="rating" id="star1" value="1"><label for="star1" title="1 star">★</label>
+              </div>
+            </div>
+            <textarea id="reviewText" placeholder="Write your review" aria-label="Write your review" required></textarea>
+            <button class="btn btn-primary" type="submit" id="reviewSubmit">Post review</button>
+            <p class="review-note" id="reviewMsg" role="status">Your email stays private and is never shown publicly.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="foot">
@@ -589,6 +675,75 @@ document.getElementById('joinBtn').addEventListener('click',function(){
  if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value)){m.style.color='';m.textContent='You\u2019re in. We\u2019ll send drops and impact updates.';e.value=''}
  else{m.style.color='#f49ad6';m.textContent='Enter a valid email to join.'}
 });
+
+// ---- customer reviews: live, backed by the B2 reviews API ----
+var REVIEWS_API='https://web-production-e3d6f.up.railway.app';
+var reviewForm=document.getElementById('reviewForm');
+var reviewList=document.getElementById('reviewList');
+var ratingText=document.getElementById('ratingText');
+var reviewMsg=document.getElementById('reviewMsg');
+function starString(n){return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n)}
+
+function renderReviews(data){
+ var reviews=(data&&data.reviews)||[];
+ var count=(data&&data.count)||reviews.length;
+ var avg=(data&&data.average)||0;
+ var avgScore=document.getElementById('avgScore'),avgStars=document.getElementById('avgStars'),reviewCount=document.getElementById('reviewCount');
+ if(avgScore)avgScore.textContent=count?avg.toFixed(1):'\u2014';
+ if(avgStars){var rn=Math.round(avg);avgStars.textContent=count?starString(rn):'\u2606\u2606\u2606\u2606\u2606';avgStars.setAttribute('aria-label',count?(rn+' out of 5 stars'):'No ratings yet')}
+ if(reviewCount)reviewCount.textContent=count?('Based on '+count+' review'+(count===1?'':'s')):'No reviews yet';
+ if(!reviews.length){reviewList.innerHTML='<p class="ld" style="padding:8px 0">No reviews yet \u2014 be the first.</p>';return}
+ reviewList.innerHTML=reviews.map(function(r){
+  var who=esc(r.name)+(r.product_title?(' \u00b7 '+esc(r.product_title)):'')+(r.verified?' <span class="vbadge">Verified</span>':'');
+  var photos=(r.photos&&r.photos.length)?'<div class="review-photos">'+r.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Customer photo">'}).join('')+'</div>':'';
+  return '<article class="review-card" data-rating="'+r.rating+'"><div class="review-top"><strong>'+who+'</strong>'+
+   '<span class="stars" aria-label="'+r.rating+' out of 5 stars">'+starString(r.rating)+'</span></div>'+
+   '<p>'+esc(r.body)+'</p>'+photos+'</article>';
+ }).join('');
+}
+
+function loadReviews(){
+ if(!reviewList)return;
+ fetch(REVIEWS_API+'/api/reviews').then(function(r){return r.json()}).then(renderReviews).catch(function(){
+  reviewList.innerHTML='<p class="ld" style="padding:8px 0">Couldn\u2019t load reviews right now.</p>';
+ });
+}
+
+document.querySelectorAll('input[name="rating"]').forEach(function(r){
+ r.addEventListener('change',function(){ratingText.textContent=r.value+' star'+(r.value==='1'?'':'s')+' selected'});
+});
+
+if(reviewForm){reviewForm.addEventListener('submit',function(e){
+ e.preventDefault();
+ var ratingEl=document.querySelector('input[name="rating"]:checked');
+ var name=document.getElementById('reviewName').value.trim();
+ var email=document.getElementById('reviewEmail').value.trim();
+ var product=document.getElementById('reviewProduct').value.trim();
+ var text=document.getElementById('reviewText').value.trim();
+ if(!name||!email||!ratingEl||!text){reviewMsg.style.color='#f49ad6';reviewMsg.textContent='Please add your name, email, rating, and review.';return}
+ var btn=document.getElementById('reviewSubmit');
+ if(btn){btn.disabled=true;btn.textContent='Posting\u2026'}
+ var fd=new FormData();
+ fd.append('name',name);fd.append('email',email);fd.append('product_title',product);
+ fd.append('rating',ratingEl.value);fd.append('body',text);
+ fetch(REVIEWS_API+'/api/reviews',{method:'POST',body:fd})
+  .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
+  .then(function(res){
+   if(btn){btn.disabled=false;btn.textContent='Post review'}
+   if(res.ok&&res.j&&res.j.ok){
+    reviewForm.reset();ratingText.textContent='Choose rating';
+    reviewMsg.style.color='';reviewMsg.textContent=res.j.message||'Thanks! Your review is pending approval.';
+   }else{
+    reviewMsg.style.color='#f49ad6';reviewMsg.textContent=(res.j&&res.j.error)||'Could not post your review. Please try again.';
+   }
+  }).catch(function(){
+   if(btn){btn.disabled=false;btn.textContent='Post review'}
+   reviewMsg.style.color='#f49ad6';reviewMsg.textContent='Could not reach the review service. Please try again.';
+  });
+})}
+
+loadReviews();
+
 addEventListener('scroll',function(){document.querySelector('.hdr').style.background=scrollY>20?'rgba(7,8,12,.9)':'rgba(7,8,12,.66)'});
 </script>
 </body>
