@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shipping Policy — B² Apparel Plus</title>
-<meta name="description" content="B² Apparel Plus shipping policy: processing times, rates and delivery estimates, order tracking, P.O. Box and APO/FPO shipping, international shipping, lost or stolen packages, and incorrect addresses.">
+<title>FAQs — B² Apparel Plus</title>
+<meta name="description" content="Frequently asked questions for B² Apparel Plus: orders & shipping, returns & exchanges, products & sizing, payments & security, contact & support, and more.">
 <style>
 :root{
   --ink:#07080c; --panel:#0e1119; --panel2:#141926; --line:rgba(255,255,255,.09);
@@ -63,15 +63,18 @@ h1{font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:-.0
 .panel{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,var(--panel2),rgba(14,17,25,.64));padding:clamp(28px,5vw,50px);position:relative;overflow:hidden}
 .panel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--neon)}
 .panel p{color:var(--mist);margin:0 0 14px}.panel p:last-child{margin-bottom:0}
-.legal-list{display:grid;gap:20px}
-.clause{--c:var(--cyan);position:relative;border:1px solid var(--line);border-radius:20px;padding:30px 30px 30px 34px;background:linear-gradient(180deg,var(--panel2),var(--panel));overflow:hidden}
-.clause::after{content:"";position:absolute;left:0;top:0;height:100%;width:4px;background:var(--c);box-shadow:0 0 22px var(--c);opacity:.8}
-.clause .no{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--c);text-transform:uppercase;margin-bottom:12px;display:block}
-.clause h3{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:21px;letter-spacing:-.01em;margin:0 0 12px;color:var(--white);line-height:1.1}
-.clause p,.clause li{color:var(--mist);font-size:15px;margin:0 0 12px}.clause p:last-child,.clause li:last-child{margin-bottom:0}
-.clause ul{padding-left:20px;margin:0 0 12px}.clause li+li{margin-top:8px}
-.clause strong{color:var(--white)}
-.clause a{color:var(--cyan);text-decoration:underline;text-underline-offset:4px;font-weight:700}
+.faq-group{--c:var(--cyan);position:relative;border:1px solid var(--line);border-radius:20px;padding:30px 30px 14px 34px;background:linear-gradient(180deg,var(--panel2),var(--panel));overflow:hidden;margin-bottom:20px}
+.faq-group::after{content:"";position:absolute;left:0;top:0;height:100%;width:4px;background:var(--c);box-shadow:0 0 22px var(--c);opacity:.8}
+.faq-group>.cat{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:21px;letter-spacing:-.01em;margin:0 0 14px;color:var(--white);line-height:1.1}
+details{border-top:1px solid var(--line)}
+details:first-of-type{border-top:0}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;font-weight:600;font-size:15.5px;color:var(--white)}
+summary::-webkit-details-marker{display:none}
+summary .ico{flex:0 0 auto;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--c);font-family:var(--mono);font-size:15px;line-height:1;transition:transform .25s,border-color .2s}
+summary:hover{color:var(--c)}summary:hover .ico{border-color:var(--c)}
+details[open] summary .ico{transform:rotate(45deg)}
+details>p{color:var(--mist);font-size:15px;margin:0 0 16px;padding-right:38px}
+details a{color:var(--cyan);text-decoration:underline;text-underline-offset:4px;font-weight:700}
 .contact{margin-top:20px;border:1px solid color-mix(in srgb,var(--violet) 48%,transparent);border-radius:20px;padding:26px 28px;background:linear-gradient(135deg,rgba(54,214,255,.08),rgba(228,95,208,.08));color:var(--mist)}
 .contact strong{color:var(--white)}
 .contact a{color:var(--cyan);text-decoration:underline;text-underline-offset:4px;font-weight:700}
@@ -111,87 +114,129 @@ h1{font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:-.0
 <main id="main">
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">Getting your order to you</span>
-      <h1>Shipping<br><span class="grad">policy.</span></h1>
-      <p class="lead">Thank you for shopping with B Squared Apparel Plus! We are dedicated to delivering your order to you as quickly and safely as possible. Please review our shipping guidelines and details below.</p>
+      <span class="eyebrow">Answers, fast</span>
+      <h1>Frequently asked<br><span class="grad">questions.</span></h1>
+      <p class="lead">Everything you might want to know about orders, shipping, returns, sizing, payments, and B² Apparel Plus. Tap any question to expand the answer.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="index.html#shop">Back to shop</a>
-        <a class="btn btn-ghost" href="#questions">Questions?</a>
+        <a class="btn btn-ghost" href="#contact">Still have questions?</a>
       </div>
       <div class="current" aria-hidden="true"></div>
     </div>
   </section>
 
-  <section class="section" id="policy">
+  <section class="section" id="faqs">
     <div class="wrap">
-      <div class="sec-head"><div><span class="eyebrow">Shipping details</span><h2>Shipping policy</h2></div></div>
-      <div class="legal-list">
+      <div class="sec-head"><div><span class="eyebrow">Help center</span><h2>FAQs</h2></div></div>
 
-        <div class="clause" style="--c:var(--als)">
-          <span class="no">01</span>
-          <h3>Processing Times</h3>
-          <p>All orders are processed within 1–3 business days (excluding weekends and holidays) after receiving your order confirmation email.</p>
-          <p>You will receive another notification when your order has shipped.</p>
-          <p><strong>Made-to-Order &amp; Custom Items:</strong> If your order includes custom, personalized, or made-to-order apparel/items, please allow an additional 3–5 business days for production before shipment.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--mind)">
-          <span class="no">02</span>
-          <h3>Shipping Rates &amp; Delivery Estimates</h3>
-          <p>Shipping charges for your order will be calculated and displayed at checkout.</p>
-          <p>Delivery delays can occasionally occur due to carrier issues, weather, or peak holiday seasons. We appreciate your patience during these times.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--cancer)">
-          <span class="no">03</span>
-          <h3>Shipment Confirmation &amp; Order Tracking</h3>
-          <p>Once your order has shipped, you will receive a shipment confirmation email containing your tracking number(s). The tracking information is usually active and scannable within 24–48 hours of shipment.</p>
-          <p>You can track your package directly through the link provided in the email or by logging into your customer account on our storefront.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--als)">
-          <span class="no">04</span>
-          <h3>Shipping to P.O. Boxes or APO/FPO Addresses</h3>
-          <p>We do ship to P.O. Boxes and APO/FPO/DPO addresses.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--mind)">
-          <span class="no">05</span>
-          <h3>International Shipping</h3>
-          <p>We currently do not ship internationally.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--cancer)">
-          <span class="no">06</span>
-          <h3>Missing, Lost, or Stolen Packages</h3>
-          <p>B Squared Apparel Plus is not responsible for packages that are lost or stolen after the carrier marks them as successfully "Delivered."</p>
-          <p>If your tracking information shows that your package was delivered but you can't find it:</p>
-          <ul>
-            <li>Check with neighbors, family members, or your front desk/leasing office.</li>
-            <li>Look around your delivery location thoroughly (porches, side doors, garages).</li>
-            <li>Wait 24 hours, as carriers sometimes mark packages as delivered prematurely.</li>
-          </ul>
-          <p>If it still hasn't arrived, please contact the shipping carrier directly to file a missing package claim using your tracking number.</p>
-        </div>
-
-        <div class="clause" style="--c:var(--als)">
-          <span class="no">07</span>
-          <h3>Incorrect Shipping Addresses</h3>
-          <p>Please double-check your shipping address at checkout. We are not responsible for orders shipped to an incorrect address provided by the buyer. If you notice an error in your shipping address, please email us immediately at <a href="mailto:support@bsquaredapparelplus.com">support@bsquaredapparelplus.com</a>. If the package has already left our facility, we cannot change the destination, and a reshipment fee may apply if the package is returned to us.</p>
-        </div>
-
+      <div class="faq-group" style="--c:var(--als)">
+        <h3 class="cat">Orders &amp; Shipping</h3>
+        <details>
+          <summary>How long does shipping take?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Most orders are processed within 2-5 business days. Once shipped, delivery typically takes 3-10 business days depending on your location.</p>
+        </details>
+        <details>
+          <summary>Do you offer tracking information?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes! Once your order ships, you'll receive an email with tracking information so you can follow your package's journey.</p>
+        </details>
+        <details>
+          <summary>Do you ship internationally?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Currently, we ship within the United States. International shipping options may be added in the future.</p>
+        </details>
+        <details>
+          <summary>Can I cancel my order?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes! As long as you request to cancel before your order is fulfilled. Once your order has been fulfilled you will have to wait for the item(s) to be received, then request a return.</p>
+        </details>
       </div>
+
+      <div class="faq-group" style="--c:var(--mind)">
+        <h3 class="cat">Returns &amp; Exchanges</h3>
+        <details>
+          <summary>What is your return policy?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>We want you to love your purchase! If there is an issue with your order, please contact us within 30 days of delivery.</p>
+        </details>
+        <details>
+          <summary>Do you accept exchanges?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes, exchanges may be available for damaged, defective, or incorrect items. Contact us with your order number and photos if applicable.</p>
+        </details>
+        <details>
+          <summary>What if my item arrives damaged?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Please email us within 7 days of receiving your order with photos of the damaged item and packaging. We'll work quickly to resolve the issue.</p>
+        </details>
+        <details>
+          <summary>Are personalized or custom items refundable?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Due to the custom nature of personalized products, these items are typically non-refundable unless they arrive damaged or incorrect.</p>
+        </details>
+      </div>
+
+      <div class="faq-group" style="--c:var(--cancer)">
+        <h3 class="cat">Products &amp; Sizing</h3>
+        <details>
+          <summary>How do I know what size to order?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Each product includes a sizing guide. We recommend reviewing the <a href="size-guide.html">size chart</a> before placing your order.</p>
+        </details>
+        <details>
+          <summary>Do colors look exactly like the photos?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>We do our best to accurately display colors, but slight variations may occur due to different screen settings and lighting.</p>
+        </details>
+        <details>
+          <summary>Are your products made to order?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Many of our items are made-to-order, helping reduce waste and allowing us to offer unique designs.</p>
+        </details>
+      </div>
+
+      <div class="faq-group" style="--c:var(--als)">
+        <h3 class="cat">Payments &amp; Security</h3>
+        <details>
+          <summary>What payment methods do you accept?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>We accept major credit cards, debit cards, PayPal, Shop Pay, Apple Pay, and other secure payment options available at checkout.</p>
+        </details>
+        <details>
+          <summary>Is my payment information secure?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Absolutely. Your payment information is encrypted and processed through secure payment providers.</p>
+        </details>
+      </div>
+
+      <div class="faq-group" style="--c:var(--mind)">
+        <h3 class="cat">Contact &amp; Support</h3>
+        <details>
+          <summary>How can I contact B² Apparel Plus?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>You can reach us by emailing <a href="mailto:support@bsquaredapparelplus.com">support@bsquaredapparelplus.com</a>. We strive to respond within 24-48 business hours.</p>
+        </details>
+        <details>
+          <summary>Do you offer wholesale or bulk orders?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes! If you're interested in bulk or wholesale pricing, please contact us for more information.</p>
+        </details>
+        <details>
+          <summary>Do you offer gift cards?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes! Digital gift cards are available and make the perfect gift for friends and family.</p>
+        </details>
+      </div>
+
+      <div class="faq-group" style="--c:var(--cancer)">
+        <h3 class="cat">B² Apparel Plus</h3>
+        <details>
+          <summary>What makes B² Apparel Plus different?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>At B² Apparel Plus, we focus on trendy, stylish, and unique products designed to help you express your personality. From apparel to accessories and home décor, we offer something for everyone.</p>
+        </details>
+        <details>
+          <summary>Do you release new products?<span class="ico" aria-hidden="true">+</span></summary>
+          <p>Yes! We regularly add new collections, seasonal items, and exclusive designs. Be sure to subscribe to our email list and follow us on social media for updates.</p>
+        </details>
+      </div>
+
     </div>
   </section>
 
-  <section class="section" id="questions">
+  <section class="section" id="contact">
     <div class="wrap">
       <div class="panel">
-        <span class="eyebrow">Questions?</span>
-        <h2 style="font-family:var(--display);font-size:clamp(28px,5vw,46px);line-height:1;text-transform:uppercase;margin:.2em 0 18px">We're here to help</h2>
-        <p>If you have any questions about the status of your order or our shipping practices, please don't hesitate to reach out:</p>
+        <span class="eyebrow">Still have questions?</span>
+        <h2 style="font-family:var(--display);font-size:clamp(28px,5vw,46px);line-height:1;text-transform:uppercase;margin:.2em 0 18px">We'd love to help 💕</h2>
+        <p>Contact us and our team will get back to you as soon as possible.</p>
         <div class="contact">
-          <p><strong>By Email:</strong> <a href="mailto:support@bsquaredapparelplus.com">support@bsquaredapparelplus.com</a></p>
+          <p><strong>Email:</strong> <a href="mailto:support@bsquaredapparelplus.com">support@bsquaredapparelplus.com</a></p>
+          <p><strong>Website:</strong> <a href="https://bsquaredapparelplus.com" target="_blank" rel="noopener noreferrer">bsquaredapparelplus.com</a></p>
         </div>
       </div>
     </div>
@@ -202,7 +247,7 @@ h1{font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:-.0
     <div class="foot-grid">
       <div><a class="brand" href="index.html" aria-label="B² Apparel Plus home"><span class="logo-mark" aria-hidden="true">B<sup>2</sup></span><span class="wm">Apparel&nbsp;Plus</span></a><p class="tag-f">Premium apparel and goods, with cause tees that fund the fights that matter.</p></div>
       <div><h4>Shop by cause</h4><ul><li><a href="index.html#shop">ALS Research</a></li><li><a href="index.html#shop">Mental Health</a></li><li><a href="index.html#shop">Cancer Research</a></li><li><a href="index.html#shop">All products</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="index.html#impact">Our impact</a></li><li><a href="index.html#story">Story</a></li><li><a href="#">Partners</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="index.html#impact">Our impact</a></li><li><a href="index.html#story">Story</a></li><li><a href="#">Partners</a></li><li><a href="mailto:support@bsquaredapparelplus.com">Contact</a></li></ul></div>
       <div><h4>Help</h4><ul><li><a href="shipping.html">Shipping</a></li><li><a href="returns.html">Returns</a></li><li><a href="size-guide.html">Size guide</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
     </div>
     <div class="foot-bottom"><small>&copy; 2026 B² Apparel Plus. All rights reserved.</small><div class="social" aria-label="Social links"><a href="#" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="#" aria-label="TikTok"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2.3 1.7 3.8 4 4v3c-1.5 0-2.9-.4-4-1.1V16a6 6 0 11-6-6c.3 0 .7 0 1 .1v3.1c-.3-.1-.7-.2-1-.2a3 3 0 103 3V3h3z"/></svg></a><a href="#" aria-label="X"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h3l-7.5 8.6L22 22h-6.8l-4.6-6-5.3 6H2l8-9.2L2 2h6.9l4.2 5.5L18 2z"/></svg></a></div></div>
