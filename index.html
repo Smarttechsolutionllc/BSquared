@@ -564,8 +564,7 @@ function gql(query,variables){
 
 // shared product fields
 var PF='id title handle tags featuredImage{url altText} '+
- 'priceRange{minVariantPrice{amount currencyCode}} '+
- 'variants(first:1){edges{node{id availableForSale}}}';
+ 'priceRange{minVariantPrice{amount currencyCode}}';
 var ALL_Q='query All($count:Int!){products(first:$count){edges{node{'+PF+'}}}}';
 var COL_Q='query Col($handle:String!,$count:Int!){collection(handle:$handle){title products(first:$count){edges{node{'+PF+'}}}}}';
 var COLS_Q='{collections(first:100){edges{node{title handle}}}}';
@@ -574,13 +573,12 @@ function renderProducts(nodes,emptyMsg){
  if(!nodes.length){grid.innerHTML='<p class="ld" style="grid-column:1/-1">'+(emptyMsg||'Nothing here yet.')+'</p>';return}
  grid.innerHTML=nodes.map(function(n){
   var ca=causeFor(n.tags);
-  var v=((n.variants.edges[0]||{}).node)||{};
   var price=money(n.priceRange.minVariantPrice.amount,n.priceRange.minVariantPrice.currencyCode);
   var img=n.featuredImage;
   var thumb=img
    ? '<div class="thumb has-img" style="--c:'+ca.color+'"><span class="tag">'+ca.label+'</span><img src="'+esc(img.url)+'" alt="'+esc(img.altText||n.title)+'" loading="lazy"></div>'
    : '<div class="thumb" style="--c:'+ca.color+'"><span class="tag">'+ca.label+'</span>'+tee(ca.color)+'</div>';
-  return '<a class="card" href="#shop" data-variant="'+esc(v.id)+'" style="--c:'+ca.color+'">'+thumb+
+  return '<a class="card" href="'+esc('https://'+SHOP.domain+'/products/'+n.handle)+'" target="_blank" rel="noopener noreferrer" style="--c:'+ca.color+'">'+thumb+
    '<div class="meta"><div class="name">'+n.title+'</div>'+
    '<div class="row"><span class="price">'+price+'</span><span class="funds">'+ca.funds+'</span></div></div></a>';
  }).join('');
@@ -627,18 +625,9 @@ function loadCollection(handle,label){
  }).catch(function(err){grid.innerHTML='<p class="ld" style="grid-column:1/-1">Couldn\u2019t load products: '+err.message+'</p>'});
 }
 
-// click a card -> create a cart with its variant -> redirect to Shopify-hosted checkout
-var CART_Q='mutation Cart($id:ID!){cartCreate(input:{lines:[{quantity:1,merchandiseId:$id}]}){cart{checkoutUrl} userErrors{message}}}';
-grid.addEventListener('click',function(e){
- var card=e.target.closest('.card');if(!card)return;
- var id=card.getAttribute('data-variant');if(!id)return;
- e.preventDefault();
- card.style.opacity=.6;
- gql(CART_Q,{id:id}).then(function(res){
-  var c=res.data&&res.data.cartCreate&&res.data.cartCreate.cart;
-  if(c&&c.checkoutUrl){window.location.href=c.checkoutUrl}else{card.style.opacity=1;alert('Could not start checkout. Please try again.')}
- }).catch(function(){card.style.opacity=1;alert('Could not start checkout. Please try again.')});
-});
+// click a card -> open that product's Shopify page (so the customer can choose size/color,
+// then add to cart and check out on the storefront). The card is a normal link to
+// https://<shop>/products/<handle>, so no JS click handling is needed.
 
 // ---- category chips -> open the matching Shopify collection ----
 // Each chip matches a collection by NAME, ignoring case, spaces, and punctuation, so the
