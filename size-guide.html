@@ -213,5 +213,6 @@ var mb=document.getElementById('menuBtn'),nav=document.getElementById('nav');
 if(mb&&nav){mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}})}
 addEventListener('scroll',function(){document.querySelector('.hdr').style.background=scrollY>20?'rgba(7,8,12,.9)':'rgba(7,8,12,.66)'});
 </script>
+  <script src="/bsquared-chat-widget.js" defer></script>
 </body>
 </html>
