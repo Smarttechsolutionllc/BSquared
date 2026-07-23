@@ -57,6 +57,25 @@ img{max-width:100%;display:block}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--cyan);display:inline-flex;align-items:center;gap:10px;margin-bottom:26px}
 .eyebrow::before{content:"";width:30px;height:1px;background:var(--neon)}
 .hero h1{font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:-.02em;font-size:clamp(50px,11vw,132px);margin:0;text-transform:uppercase}
+.hero-title-pulse{
+  display:inline-block;
+  transform-origin:left center;
+  will-change:transform,filter;
+  animation:heroTitlePulse 2.6s ease-in-out infinite;
+}
+@keyframes heroTitlePulse{
+  0%,100%{
+    transform:scale(1);
+    filter:brightness(1) drop-shadow(0 0 0 rgba(138,99,239,0));
+  }
+  50%{
+    transform:scale(1.025);
+    filter:brightness(1.12) drop-shadow(0 0 20px rgba(138,99,239,.48));
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-title-pulse{animation:none}
+}
 .grad{background:var(--neon);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 26px rgba(138,99,239,.35))}
 .hero p.lead{max-width:540px;color:var(--mist);font-size:clamp(16px,2.2vw,19px);margin:30px 0 38px}
 .hero-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
@@ -259,7 +278,7 @@ img{max-width:100%;display:block}
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow">B² gives back</span>
-      <h1>Like it. Buy it.<br><span class="grad">Wear it. Share it.</span></h1>
+      <h1 class="hero-title-pulse">Like it. Buy it.<br><span class="grad">Wear it. Share it.</span></h1>
       <p class="lead">Premium apparel, home goods, bold prints, and cause tees with real impact. Pick a cause tee, wear it loud, and a share from that cause tee goes straight to research and awareness for its cause.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#causes">Shop by cause</a>
